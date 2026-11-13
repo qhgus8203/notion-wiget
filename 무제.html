@@ -1,0 +1,267 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2487.5">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="ko"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;Notion Circular D-Day Widget&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>/* 1. 노션 임베드 최적화: 스크롤바 원천 차단 및 투명 배경 */</p>
+<p class="p1"><span class="Apple-converted-space">    </span>html, body {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin: 0;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 0;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>height: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>overflow: hidden;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background-color: transparent;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>justify-content: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>* {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>box-sizing: border-box;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>/* 2. 사각형 배경 컨테이너 */</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.widget-container {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background-color: #ffffff;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid #e5e7eb;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 24px 28px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>flex-direction: column;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>max-width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>/* 3. 상단 가운데 "D-DAY" 타이틀 */</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.widget-title {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 14px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 800;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>letter-spacing: 0.15em;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #374151;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin: 0;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>/* 4. 디데이 항목 리스트 (가운데 중심 정렬 / 가로·세로 전환 가능) */</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.dday-list {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>flex-direction: row; /* 가로 배치: row | 세로 배치: column */</p>
+<p class="p1"><span class="Apple-converted-space">      </span>flex-wrap: wrap;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>justify-content: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 28px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>/* 5. 개별 디데이 아이템 */</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.dday-item {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>flex-direction: column;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>/* 원형 선 그래프 영역 */</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.circle-wrapper {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>position: relative;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>width: 96px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>height: 96px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>justify-content: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.progress-ring {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>transform: rotate(-90deg); /* 12시 방향부터 그래프 시작 */</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.progress-ring__bg {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>fill: transparent;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>stroke: #f3f4f6;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>stroke-width: 5; /* 선 두께 */</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.progress-ring__circle {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>fill: transparent;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>stroke: #2563eb; /* 기본 그래프 선 색상 */</p>
+<p class="p1"><span class="Apple-converted-space">      </span>stroke-width: 5; /* 선 두께 */</p>
+<p class="p1"><span class="Apple-converted-space">      </span>stroke-linecap: round;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>transition: stroke-dashoffset 0.6s ease;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>/* 원형 그래프 정중앙 남은 날짜 숫자 */</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.dday-count {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>position: absolute;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 22px; /* 숫자만 들어가므로 가독성을 위해 조금 더 키움 */</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 800;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #111827;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>letter-spacing: -0.02em;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-variant-numeric: tabular-nums;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>/* 그래프 밑 디데이 이름 */</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.dday-name {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 13px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 600;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #4b5563;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>max-width: 110px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>word-break: keep-all;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>line-height: 1.3;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>/* 6. 다크 모드 자동 대응 */</p>
+<p class="p1"><span class="Apple-converted-space">    </span>@media (prefers-color-scheme: dark) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>.widget-container {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>background-color: #202020;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>border-color: #2f2f2f;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>.widget-title {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>color: #d1d5db;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>.progress-ring__bg {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>stroke: #2e2e2e;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>.dday-count {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>color: #f9fafb;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>.dday-name {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>color: #9ca3af;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="widget-container"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- 상단 가운데 문구 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h1 class="widget-title"&gt;D-DAY&lt;/h1&gt;</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- 디데이 항목들이 자동으로 추가되는 영역 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="dday-list" id="dday-list"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>// =========================================================================</p>
+<p class="p1"><span class="Apple-converted-space">    </span>// [커스텀 설정 영역]</p>
+<p class="p1"><span class="Apple-converted-space">    </span>// 1. 배치 방향 설정: 가로로 나열하려면 'row', 세로로 쌓으려면 'column' 입력</p>
+<p class="p1"><span class="Apple-converted-space">    </span>// =========================================================================</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const LAYOUT_DIRECTION = 'row';<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// =========================================================================</p>
+<p class="p1"><span class="Apple-converted-space">    </span>// 2. 디데이 항목 추가 및 수정</p>
+<p class="p1"><span class="Apple-converted-space">    </span>// - title: 그래프 아래에 표시될 디데이 이름</p>
+<p class="p1"><span class="Apple-converted-space">    </span>// - startDate: 진행률(퍼센트) 계산의 시작 기준일 (YYYY-MM-DD)</p>
+<p class="p1"><span class="Apple-converted-space">    </span>// - targetDate: 목표 디데이 날짜 (YYYY-MM-DD)</p>
+<p class="p1"><span class="Apple-converted-space">    </span>// - color: 원형 선 그래프의 포인트 컬러 (HEX 코드)</p>
+<p class="p1"><span class="Apple-converted-space">    </span>// =========================================================================</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const DDAY_ITEMS = [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "기말고사",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>startDate: "2026-09-01",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>targetDate: "2026-12-15",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>color: "#2563eb" // 블루</p>
+<p class="p1"><span class="Apple-converted-space">      </span>},</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "2027 새해",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>startDate: "2026-01-01",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>targetDate: "2027-01-01",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>color: "#10b981" // 에메랄드 그린</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>// 새로운 항목을 추가하려면 위 { ... } 블록을 복사해서 쉼표(,) 뒤에 붙여넣으세요!</p>
+<p class="p1"><span class="Apple-converted-space">    </span>];</p>
+<p class="p1"><span class="Apple-converted-space">    </span>// =========================================================================</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function renderDDays() {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const listEl = document.getElementById('dday-list');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>listEl.style.flexDirection = LAYOUT_DIRECTION;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>listEl.innerHTML = '';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>const today = new Date();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>today.setHours(0, 0, 0, 0);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>const radius = 41;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const circumference = 2 * Math.PI * radius;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>DDAY_ITEMS.forEach(item =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const start = new Date(item.startDate + "T00:00:00");</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const target = new Date(item.targetDate + "T00:00:00");</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 남은 일수 계산</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const diffTime = target - today;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// "D-" 없이 숫자만 표시 (지났을 경우 +숫자)</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let ddayLabel = "";</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (diffDays === 0) {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>ddayLabel = "0";</p>
+<p class="p1"><span class="Apple-converted-space">        </span>} else if (diffDays &gt; 0) {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>ddayLabel = `${diffDays}`;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>ddayLabel = `+${Math.abs(diffDays)}`;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 퍼센티지 계산</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const totalDuration = target - start;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const elapsedDuration = today - start;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let percentage = 0;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (totalDuration &lt;= 0 || diffDays &lt;= 0) {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>percentage = 100;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>} else if (elapsedDuration &lt;= 0) {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>percentage = 0;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>percentage = Math.min(Math.max((elapsedDuration / totalDuration) * 100, 0), 100);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const strokeDashoffset = circumference - (percentage / 100) * circumference;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const itemEl = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>itemEl.className = 'dday-item';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>itemEl.innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="circle-wrapper" title="진행률 ${Math.round(percentage)}%"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;svg class="progress-ring" width="96" height="96"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;circle class="progress-ring__bg" r="${radius}" cx="48" cy="48" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;circle<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>class="progress-ring__circle"<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>r="${radius}"<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>cx="48"<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>cy="48"<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>style="stroke: ${item.color}; stroke-dasharray: ${circumference} ${circumference}; stroke-dashoffset: ${strokeDashoffset};"</p>
+<p class="p1"><span class="Apple-converted-space">              </span>/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/svg&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;span class="dday-count"&gt;${ddayLabel}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="dday-name"&gt;${item.title}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>`;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>listEl.appendChild(itemEl);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>renderDDays();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
