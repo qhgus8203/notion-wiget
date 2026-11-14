@@ -1,159 +1,235 @@
+<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Notion Task Heatmap</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cal-heatmap/cal-heatmap.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나만의 만다라트</title>
     <style>
-        body {
-            background-color: transparent !important;
-            color: inherit;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 10px;
+        :root {
+            --color-center: #FFEBF0; /* 중심부 */
+            --color-ring-1: #DBCACE; /* 1단계 외곽 */
+            --color-ring-2: #B3A4A8; /* 2단계 외곽 */
+            --color-ring-3: #8A7F81; /* 3단계 외곽 */
+            --color-outer: #61595B;  /* 최외곽 및 배경 */
         }
-        #widget-container {
+
+        body {
+            font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+            background-color: #f7f5f5;
+            margin: 0;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-        }
-        .header-bar {
-            display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: center;
+            min-height: 100vh;
         }
-        #widget-title {
-            border: none;
-            background: transparent;
-            font-size: 14px;
-            font-weight: 600;
-            color: inherit;
-            outline: none;
-            padding: 2px 4px;
-            width: 140px;
+
+        h1 {
+            color: var(--color-outer);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
         }
-        #widget-title:focus {
-            border-bottom: 1px solid #ff8fab;
+
+        .mandalart-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            background-color: var(--color-outer);
+            padding: 12px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
         }
-        .period-buttons {
-            display: flex;
+
+        .sub-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
             gap: 4px;
+            background-color: var(--color-outer);
+            padding: 4px;
+            border-radius: 8px;
         }
-        .period-buttons button {
-            background: rgba(255, 182, 193, 0.2);
-            border: 1px solid #ffb3c6;
-            border-radius: 4px;
-            padding: 2px 6px;
-            cursor: pointer;
-            font-size: 11px;
-            color: inherit;
-            transition: all 0.2s;
+
+        .cell {
+            width: 75px;
+            height: 75px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 4px;
+            border-radius: 6px;
+            word-break: break-all;
+            outline: none;
+            cursor: text;
+            transition: transform 0.1s ease;
         }
-        .period-buttons button:hover, .period-buttons button.active {
-            background: #ffb3c6;
+
+        .cell:focus {
+            box-shadow: inset 0 0 0 2px #333;
+            background-color: #fff !important;
+        }
+
+        /* 계층별 색상 매핑 */
+        .cell.center-core {
+            background-color: var(--color-center);
+            color: #4a3b3e;
+            font-weight: bold;
+        }
+
+        .cell.ring-1 {
+            background-color: var(--color-ring-1);
+            color: #3d3134;
+        }
+
+        .cell.ring-2 {
+            background-color: var(--color-ring-2);
             color: #fff;
         }
-        #cal-heatmap {
-            overflow-x: auto;
+
+        .cell.ring-3 {
+            background-color: var(--color-ring-3);
+            color: #fff;
         }
-        /* 파스텔 핑크 테두리 및 둥근 모서리 설정 */
-        .graph-rect {
-            stroke: #ffb3c6 !important;
-            stroke-width: 1px !important;
-            rx: 3px;
-            ry: 3px;
+
+        .cell.outer {
+            background-color: var(--color-outer);
+            color: #f7f5f5;
+        }
+
+        @media (max-width: 768px) {
+            .cell {
+                width: 50px;
+                height: 50px;
+                font-size: 0.6rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div id="widget-container">
-        <div class="header-bar">
-            <input type="text" id="widget-title" value="💡 나의 습관 트래커" />
-            <div class="period-buttons">
-                <button onclick="changeRange(7)">7일</button>
-                <button onclick="changeRange(14)">14일</button>
-                <button onclick="changeRange(30)" class="active">30일</button>
-                <button onclick="changeRange(31)">31일</button>
-            </div>
+
+    <h1>✨ 나의 만다라트 계획표</h1>
+
+    <div class="mandalart-container">
+        <!-- 1번 서브박스 (좌상) -->
+        <div class="sub-grid">
+            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell ring-2" contenteditable="true">목표</div>
+            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell ring-3" contenteditable="true"></div>
         </div>
-        <div id="cal-heatmap"></div>
+
+        <!-- 2번 서브박스 (중상) -->
+        <div class="sub-grid">
+            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell ring-1" contenteditable="true">목표</div>
+            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell ring-2" contenteditable="true"></div>
+        </div>
+
+        <!-- 3번 서브박스 (우상) -->
+        <div class="sub-grid">
+            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell ring-2" contenteditable="true">목표</div>
+            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell ring-3" contenteditable="true"></div>
+        </div>
+
+        <!-- 4번 서브박스 (좌중) -->
+        <div class="sub-grid">
+            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell ring-1" contenteditable="true">목표</div>
+            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell ring-2" contenteditable="true"></div>
+        </div>
+
+        <!-- 5번 서브박스 (정중앙) -->
+        <div class="sub-grid">
+            <div class="cell ring-1" contenteditable="true"></div>
+            <div class="cell ring-1" contenteditable="true"></div>
+            <div class="cell ring-1" contenteditable="true"></div>
+            <div class="cell ring-1" contenteditable="true"></div>
+            <div class="cell center-core" contenteditable="true">핵심 목표</div>
+            <div class="cell ring-1" contenteditable="true"></div>
+            <div class="cell ring-1" contenteditable="true"></div>
+            <div class="cell ring-1" contenteditable="true"></div>
+            <div class="cell ring-1" contenteditable="true"></div>
+        </div>
+
+        <!-- 6번 서브박스 (우중) -->
+        <div class="sub-grid">
+            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell ring-1" contenteditable="true">목표</div>
+            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell ring-2" contenteditable="true"></div>
+        </div>
+
+        <!-- 7번 서브박스 (좌하) -->
+        <div class="sub-grid">
+            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell ring-2" contenteditable="true">목표</div>
+            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell ring-3" contenteditable="true"></div>
+        </div>
+
+        <!-- 8번 서브박스 (중하) -->
+        <div class="sub-grid">
+            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell ring-1" contenteditable="true">목표</div>
+            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell ring-2" contenteditable="true"></div>
+        </div>
+
+        <!-- 9번 서브박스 (우하) -->
+        <div class="sub-grid">
+            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell ring-2" contenteditable="true">목표</div>
+            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell ring-3" contenteditable="true"></div>
+        </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/d3@3"></script>
-    <script src="https://cdn.jsdelivr.net/npm/cal-heatmap/cal-heatmap.min.js"></script>
-    <script>
-        let cal = new CalHeatMap();
-        const baseUrl = window.location.origin;
-
-        function initHeatmap(days) {
-            document.getElementById('cal-heatmap').innerHTML = "";
-            cal = new CalHeatMap();
-            
-            // 일수 계산에 따른 domain 및 range 설정 (30일/31일은 1개월 단위, 7/14일은 주 단위 설정)
-            let domainType = "month";
-            let numRange = 1;
-            let startDate = new Date();
-
-            if (days === 7) {
-                domainType = "day";
-                numRange = 7;
-                startDate.setDate(startDate.getDate() - 7);
-            } else if (days === 14) {
-                domainType = "day";
-                numRange = 14;
-                startDate.setDate(startDate.getDate() - 14);
-            } else if (days === 30 || days === 31) {
-                startDate.setDate(startDate.getDate() - days);
-            }
-
-            cal.init({
-                itemSelector: "#cal-heatmap",
-                domain: domainType,
-                subDomain: "day",
-                data: baseUrl + "/api/database",
-                start: startDate,
-                cellSize: 11,
-                range: numRange,
-                tooltip: true,
-                considerMissingDataAsZero: false,
-                legend: [25, 50, 65, 80],
-                legendColors: {
-                    min: "#fff0f3",
-                    base: "#fff0f3",
-                    colors: ["#fff0f3", "#ffb3c6", "#ff8fab", "#fb6f92", "#c9184a"],
-                    empty: "#fff0f3"
-                },
-                subDomainTitleFormat: {
-                    empty: "{date}",
-                    filled: "{count}% on {date}"
-                },
-                afterLoadData: function(data) {
-                    if (!data) return {};
-                    var result = {};
-                    data.forEach(function(item) {
-                        var date = new Date(item.date).getTime() / 1000;
-                        result[date] = item.progress;
-                    });
-                    return result;
-                }
-            });
-        }
-
-        function changeRange(days) {
-            // 버튼 활성화 스타일 변경
-            document.querySelectorAll('.period-buttons button').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            initHeatmap(days);
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            initHeatmap(30); // 기본 30일 설정
-
-            // 30초마다 데이터 자동 갱신
-            setInterval(function() {
-                cal.update(baseUrl + "/api/database");
-            }, 30000);
-        });
-    </script>
 </body>
 </html>
