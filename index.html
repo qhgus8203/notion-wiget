@@ -3,231 +3,219 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>나만의 만다라트</title>
+    <title>만다라트</title>
     <style>
         :root {
-            --color-center: #FFEBF0; /* 중심부 */
-            --color-ring-1: #DBCACE; /* 1단계 외곽 */
-            --color-ring-2: #B3A4A8; /* 2단계 외곽 */
-            --color-ring-3: #8A7F81; /* 3단계 외곽 */
-            --color-outer: #61595B;  /* 최외곽 및 배경 */
+            --color-center: #FFEBF0; /* 1번째: 중심부 */
+            --color-mid: #DBCACE;    /* 2번째: 중간 목표 */
+            --color-outer: #B3A4A8;  /* 3번째: 외곽 실행과제 */
+            --border-color: #9e8f93; /* 칸 구분선 */
+            --text-color: #3d3134;   /* 고정 글자색 */
         }
 
         body {
             font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-            background-color: #f7f5f5;
+            background-color: transparent;
             margin: 0;
-            padding: 20px;
+            padding: 12px;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-        }
-
-        h1 {
-            color: var(--color-outer);
-            margin-bottom: 20px;
-            font-size: 1.5rem;
+            box-sizing: border-box;
         }
 
         .mandalart-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            background-color: var(--color-outer);
-            padding: 12px;
-            border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            gap: 6px;
+            background-color: var(--border-color);
+            padding: 6px;
+            border-radius: 12px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
         }
 
         .sub-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 4px;
-            background-color: var(--color-outer);
-            padding: 4px;
-            border-radius: 8px;
+            gap: 2px;
+            background-color: var(--border-color);
+            padding: 2px;
+            border-radius: 6px;
         }
 
         .cell {
-            width: 75px;
-            height: 75px;
+            width: 52px;
+            height: 52px;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            font-size: 0.75rem;
+            font-size: 0.68rem;
             font-weight: 500;
-            padding: 4px;
-            border-radius: 6px;
-            word-break: break-all;
+            line-height: 1.2;
+            padding: 3px;
+            border-radius: 4px;
+            word-break: keep-all;
+            overflow-wrap: break-word;
             outline: none;
             cursor: text;
-            transition: transform 0.1s ease;
+            color: var(--text-color);
+            box-sizing: border-box;
         }
 
+        /* 입력 및 수정 시 배경색/글자색 변화 없음 (테두리만 살짝 표시) */
         .cell:focus {
-            box-shadow: inset 0 0 0 2px #333;
-            background-color: #fff !important;
+            box-shadow: inset 0 0 0 1.5px #61595B;
         }
 
-        /* 계층별 색상 매핑 */
-        .cell.center-core {
+        /* 3가지 색상 계층 */
+        .cell.tier-center {
             background-color: var(--color-center);
-            color: #4a3b3e;
-            font-weight: bold;
+            font-weight: 700;
         }
 
-        .cell.ring-1 {
-            background-color: var(--color-ring-1);
-            color: #3d3134;
+        .cell.tier-mid {
+            background-color: var(--color-mid);
+            font-weight: 600;
         }
 
-        .cell.ring-2 {
-            background-color: var(--color-ring-2);
-            color: #fff;
-        }
-
-        .cell.ring-3 {
-            background-color: var(--color-ring-3);
-            color: #fff;
-        }
-
-        .cell.outer {
+        .cell.tier-outer {
             background-color: var(--color-outer);
-            color: #f7f5f5;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 600px) {
             .cell {
-                width: 50px;
-                height: 50px;
-                font-size: 0.6rem;
+                width: 38px;
+                height: 38px;
+                font-size: 0.55rem;
+                padding: 2px;
+            }
+            .mandalart-container {
+                gap: 4px;
+                padding: 4px;
             }
         }
     </style>
 </head>
 <body>
 
-    <h1>✨ 나의 만다라트 계획표</h1>
-
     <div class="mandalart-container">
         <!-- 1번 서브박스 (좌상) -->
         <div class="sub-grid">
-            <div class="cell ring-3" contenteditable="true"></div>
-            <div class="cell ring-3" contenteditable="true"></div>
-            <div class="cell ring-3" contenteditable="true"></div>
-            <div class="cell ring-3" contenteditable="true"></div>
-            <div class="cell ring-2" contenteditable="true">목표</div>
-            <div class="cell ring-3" contenteditable="true"></div>
-            <div class="cell ring-3" contenteditable="true"></div>
-            <div class="cell ring-3" contenteditable="true"></div>
-            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-mid" contenteditable="true">세부목표</div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
         </div>
 
         <!-- 2번 서브박스 (중상) -->
         <div class="sub-grid">
-            <div class="cell ring-2" contenteditable="true"></div>
-            <div class="cell ring-2" contenteditable="true"></div>
-            <div class="cell ring-2" contenteditable="true"></div>
-            <div class="cell ring-2" contenteditable="true"></div>
-            <div class="cell ring-1" contenteditable="true">목표</div>
-            <div class="cell ring-2" contenteditable="true"></div>
-            <div class="cell ring-2" contenteditable="true"></div>
-            <div class="cell ring-2" contenteditable="true"></div>
-            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-mid" contenteditable="true">세부목표</div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
         </div>
 
         <!-- 3번 서브박스 (우상) -->
         <div class="sub-grid">
-            <div class="cell ring-3" contenteditable="true"></div>
-            <div class="cell ring-3" contenteditable="true"></div>
-            <div class="cell ring-3" contenteditable="true"></div>
-            <div class="cell ring-3" contenteditable="true"></div>
-            <div class="cell ring-2" contenteditable="true">목표</div>
-            <div class="cell ring-3" contenteditable="true"></div>
-            <div class="cell ring-3" contenteditable="true"></div>
-            <div class="cell ring-3" contenteditable="true"></div>
-            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-mid" contenteditable="true">세부목표</div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
         </div>
 
         <!-- 4번 서브박스 (좌중) -->
         <div class="sub-grid">
-            <div class="cell ring-2" contenteditable="true"></div>
-            <div class="cell ring-2" contenteditable="true"></div>
-            <div class="cell ring-2" contenteditable="true"></div>
-            <div class="cell ring-2" contenteditable="true"></div>
-            <div class="cell ring-1" contenteditable="true">목표</div>
-            <div class="cell ring-2" contenteditable="true"></div>
-            <div class="cell ring-2" contenteditable="true"></div>
-            <div class="cell ring-2" contenteditable="true"></div>
-            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-mid" contenteditable="true">세부목표</div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
         </div>
 
         <!-- 5번 서브박스 (정중앙) -->
         <div class="sub-grid">
-            <div class="cell ring-1" contenteditable="true"></div>
-            <div class="cell ring-1" contenteditable="true"></div>
-            <div class="cell ring-1" contenteditable="true"></div>
-            <div class="cell ring-1" contenteditable="true"></div>
-            <div class="cell center-core" contenteditable="true">핵심 목표</div>
-            <div class="cell ring-1" contenteditable="true"></div>
-            <div class="cell ring-1" contenteditable="true"></div>
-            <div class="cell ring-1" contenteditable="true"></div>
-            <div class="cell ring-1" contenteditable="true"></div>
+            <div class="cell tier-mid" contenteditable="true"></div>
+            <div class="cell tier-mid" contenteditable="true"></div>
+            <div class="cell tier-mid" contenteditable="true"></div>
+            <div class="cell tier-mid" contenteditable="true"></div>
+            <div class="cell tier-center" contenteditable="true">핵심목표</div>
+            <div class="cell tier-mid" contenteditable="true"></div>
+            <div class="cell tier-mid" contenteditable="true"></div>
+            <div class="cell tier-mid" contenteditable="true"></div>
+            <div class="cell tier-mid" contenteditable="true"></div>
         </div>
 
         <!-- 6번 서브박스 (우중) -->
         <div class="sub-grid">
-            <div class="cell ring-2" contenteditable="true"></div>
-            <div class="cell ring-2" contenteditable="true"></div>
-            <div class="cell ring-2" contenteditable="true"></div>
-            <div class="cell ring-2" contenteditable="true"></div>
-            <div class="cell ring-1" contenteditable="true">목표</div>
-            <div class="cell ring-2" contenteditable="true"></div>
-            <div class="cell ring-2" contenteditable="true"></div>
-            <div class="cell ring-2" contenteditable="true"></div>
-            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-mid" contenteditable="true">세부목표</div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
         </div>
 
         <!-- 7번 서브박스 (좌하) -->
         <div class="sub-grid">
-            <div class="cell ring-3" contenteditable="true"></div>
-            <div class="cell ring-3" contenteditable="true"></div>
-            <div class="cell ring-3" contenteditable="true"></div>
-            <div class="cell ring-3" contenteditable="true"></div>
-            <div class="cell ring-2" contenteditable="true">목표</div>
-            <div class="cell ring-3" contenteditable="true"></div>
-            <div class="cell ring-3" contenteditable="true"></div>
-            <div class="cell ring-3" contenteditable="true"></div>
-            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-mid" contenteditable="true">세부목표</div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
         </div>
 
         <!-- 8번 서브박스 (중하) -->
         <div class="sub-grid">
-            <div class="cell ring-2" contenteditable="true"></div>
-            <div class="cell ring-2" contenteditable="true"></div>
-            <div class="cell ring-2" contenteditable="true"></div>
-            <div class="cell ring-2" contenteditable="true"></div>
-            <div class="cell ring-1" contenteditable="true">목표</div>
-            <div class="cell ring-2" contenteditable="true"></div>
-            <div class="cell ring-2" contenteditable="true"></div>
-            <div class="cell ring-2" contenteditable="true"></div>
-            <div class="cell ring-2" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-mid" contenteditable="true">세부목표</div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
         </div>
 
         <!-- 9번 서브박스 (우하) -->
         <div class="sub-grid">
-            <div class="cell ring-3" contenteditable="true"></div>
-            <div class="cell ring-3" contenteditable="true"></div>
-            <div class="cell ring-3" contenteditable="true"></div>
-            <div class="cell ring-3" contenteditable="true"></div>
-            <div class="cell ring-2" contenteditable="true">목표</div>
-            <div class="cell ring-3" contenteditable="true"></div>
-            <div class="cell ring-3" contenteditable="true"></div>
-            <div class="cell ring-3" contenteditable="true"></div>
-            <div class="cell ring-3" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-mid" contenteditable="true">세부목표</div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
+            <div class="cell tier-outer" contenteditable="true"></div>
         </div>
     </div>
 
