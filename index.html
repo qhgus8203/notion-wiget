@@ -6,11 +6,12 @@
     <title>만다라트</title>
     <style>
         :root {
-            --color-center: #FFEBF0; /* 1번째: 중심부 */
-            --color-mid: #DBCACE;    /* 2번째: 중간 목표 */
-            --color-outer: #B3A4A8;  /* 3번째: 외곽 실행과제 */
-            --border-color: #9e8f93; /* 칸 구분선 */
-            --text-color: #3d3134;   /* 고정 글자색 */
+            --color-center: #FFEBF0; /* 중심부: 화사한 연핑크 */
+            --color-mid: #F7DCE3;    /* 중간 목표: 맑은 파스텔 핑크 */
+            --color-outer: #EFE4E7;  /* 외곽 실행과제: 밝은 로즈 아이보리 */
+            --border-color: #FFFFFF; /* 칸 구분선: 깔끔한 화이트 */
+            --outer-frame: #E5D6DA;  /* 전체 외곽선: 은은한 연회핑크 */
+            --text-color: #4A3E41;   /* 부드러운 다크 브라운그레이 글자색 */
         }
 
         body {
@@ -30,9 +31,10 @@
             grid-template-columns: repeat(3, 1fr);
             gap: 6px;
             background-color: var(--border-color);
+            border: 2px solid var(--outer-frame);
             padding: 6px;
             border-radius: 12px;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 16px rgba(179, 164, 168, 0.15);
         }
 
         .sub-grid {
@@ -64,12 +66,11 @@
             box-sizing: border-box;
         }
 
-        /* 입력 및 수정 시 배경색/글자색 변화 없음 (테두리만 살짝 표시) */
         .cell:focus {
-            box-shadow: inset 0 0 0 1.5px #61595B;
+            box-shadow: inset 0 0 0 1.5px #B3A4A8;
         }
 
-        /* 3가지 색상 계층 */
+        /* 밝아진 3가지 색상 계층 */
         .cell.tier-center {
             background-color: var(--color-center);
             font-weight: 700;
