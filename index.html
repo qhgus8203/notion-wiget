@@ -112,4 +112,251 @@
     .progress-ring__bg {
       fill: transparent;
       stroke: #f3f4f6;
-      stroke-width:
+      stroke-width: 4.5;
+    }
+
+    .progress-ring__circle {
+      fill: transparent;
+      stroke: #362729;
+      stroke-width: 4.5;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.6s ease;
+    }
+
+    /* 원형 그래프 정중앙 숫자 */
+    .dday-count {
+      position: absolute;
+      font-size: 24px;
+      font-weight: 800;
+      color: #362729;
+      letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* 그래프 밑 디데이 이름 */
+    .dday-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #362729;
+      text-align: center;
+      max-width: 110px;
+      word-break: keep-all;
+      line-height: 1.3;
+    }
+
+    /* 항목 삭제 버튼 */
+    .delete-btn {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: #fee2e2;
+      color: #991b1b;
+      border: none;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .dday-item:hover .delete-btn {
+      display: flex;
+    }
+
+    /* 토글형 입력 폼 */
+    .input-form-container {
+      width: 100%;
+      display: none;
+      flex-direction: column;
+      gap: 8px;
+      padding-top: 10px;
+      border-top: 1px solid #f3f4f6;
+    }
+    .input-form-container.show {
+      display: flex;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .input-form-container input {
+      flex: 1;
+      padding: 7px 10px;
+      font-size: 11px;
+      border: 1px solid #e5e7eb;
+      border-radius: 4px; /* 각진 입력창 */
+      outline: none;
+      font-family: 'Pretendard', sans-serif;
+    }
+
+    .input-form-container input:focus {
+      border-color: #362729;
+    }
+
+    .add-btn {
+      width: 100%;
+      padding: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      background-color: #362729;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px; /* 각진 버튼 */
+      cursor: pointer;
+      font-family: 'Pretendard', sans-serif;
+    }
+
+    /* 다크 모드 대응 */
+    @media (prefers-color-scheme: dark) {
+      .widget-container {
+        background-color: #202020;
+        border-color: #2f2f2f;
+      }
+      .widget-header { border-bottom-color: #2f2f2f; }
+      .widget-title, .dday-count, .dday-name { color: #f9fafb; }
+      .toggle-btn { background: #2a2a2a; color: #d1d5db; }
+      .toggle-btn:hover { background: #333333; }
+      .progress-ring__bg { stroke: #2e2e2e; }
+      .progress-ring__circle { stroke: #d1d5db; }
+      .input-form-container { border-top-color: #2f2f2f; }
+      .input-form-container input { background-color: #2a2a2a; border-color: #3f3f3f; color: #fff; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="widget-container">
+    <div class="widget-header">
+      <h1 class="widget-title">D - DAY</h1>
+      <button class="toggle-btn" onclick="toggleForm()" id="toggle-btn">+ 디데이 추가하기</button>
+    </div>
+    
+    <div class="dday-list" id="dday-list"></div>
+
+    <div class="input-form-container" id="form-container">
+      <div class="input-row">
+        <input type="text" id="title-input" placeholder="디데이 이름 (예: 프로젝트)" />
+      </div>
+      <div class="input-row">
+        <input type="date" id="start-date-input" title="시작일" />
+        <input type="date" id="target-date-input" title="목표일" />
+      </div>
+      <button class="add-btn" onclick="addDDay()">디데이 추가하기</button>
+    </div>
+  </div>
+
+  <script>
+    let ddayItems = JSON.parse(localStorage.getItem('notion_dday_custom_items')) || [
+      { title: "기말고사", startDate: "2026-09-01", targetDate: "2026-12-15" },
+      { title: "2027 새해", startDate: "2026-01-01", targetDate: "2027-01-01" }
+    ];
+
+    function toggleForm() {
+      const form = document.getElementById('form-container');
+      const btn = document.getElementById('toggle-btn');
+      form.classList.toggle('show');
+      if (form.classList.contains('show')) {
+        btn.textContent = "닫기";
+      } else {
+        btn.textContent = "+ 디데이 추가하기";
+      }
+    }
+
+    function renderDDays() {
+      const listEl = document.getElementById('dday-list');
+      listEl.innerHTML = '';
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const radius = 44;
+      const circumference = 2 * Math.PI * radius;
+
+      ddayItems.forEach((item, index) => {
+        const start = new Date(item.startDate + "T00:00:00");
+        const target = new Date(item.targetDate + "T00:00:00");
+
+        const diffTime = target - today;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        let ddayLabel = diffDays === 0 ? "0" : (diffDays > 0 ? `${diffDays}` : `+${Math.abs(diffDays)}`);
+
+        const totalDuration = target - start;
+        const elapsedDuration = today - start;
+        let percentage = 0;
+
+        if (totalDuration <= 0 || diffDays <= 0) {
+          percentage = 100;
+        } else if (elapsedDuration <= 0) {
+          percentage = 0;
+        } else {
+          percentage = Math.min(Math.max((elapsedDuration / totalDuration) * 100, 0), 100);
+        }
+
+        const strokeDashoffset = circumference - (percentage / 100) * circumference;
+
+        const itemEl = document.createElement('div');
+        itemEl.className = 'dday-item';
+        itemEl.innerHTML = `
+          <div class="circle-wrapper" title="시작: ${item.startDate} ~ 목표: ${item.targetDate} (진행률 ${Math.round(percentage)}%)">
+            <svg class="progress-ring" width="104" height="104">
+              <circle class="progress-ring__bg" r="${radius}" cx="52" cy="52" />
+              <circle 
+                class="progress-ring__circle" 
+                r="${radius}" 
+                cx="52" 
+                cy="52" 
+                style="stroke-dasharray: ${circumference} ${circumference}; stroke-dashoffset: ${strokeDashoffset};"
+              />
+            </svg>
+            <span class="dday-count">${ddayLabel}</span>
+          </div>
+          <div class="dday-name">${item.title}</div>
+          <button class="delete-btn" onclick="removeDDay(${index})" title="삭제">×</button>
+        `;
+        listEl.appendChild(itemEl);
+      });
+    }
+
+    function addDDay() {
+      const titleInput = document.getElementById('title-input');
+      const startDateInput = document.getElementById('start-date-input');
+      const targetDateInput = document.getElementById('target-date-input');
+
+      if (!titleInput.value || !startDateInput.value || !targetDateInput.value) {
+        alert("이름, 시작일, 목표일을 모두 입력해주세요!");
+        return;
+      }
+
+      const newItem = {
+        title: titleInput.value,
+        startDate: startDateInput.value,
+        targetDate: targetDateInput.value
+      };
+
+      ddayItems.push(newItem);
+      localStorage.setItem('notion_dday_custom_items', JSON.stringify(ddayItems));
+
+      titleInput.value = '';
+      startDateInput.value = '';
+      targetDateInput.value = '';
+      toggleForm();
+      renderDDays();
+    }
+
+    function removeDDay(index) {
+      ddayItems.splice(index, 1);
+      localStorage.setItem('notion_dday_custom_items', JSON.stringify(ddayItems));
+      renderDDays();
+    }
+
+    renderDDays();
+  </script>
+</body>
+</html>
