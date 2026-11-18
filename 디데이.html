@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Notion D-Day Widget (Compact)</title>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: transparent;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    * { box-sizing: border-box; }
+
+    /* 컴팩트 각진 사각형 컨테이너 */
+    .widget-container {
+      background-color: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+      padding: 18px 20px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      max-width: 380px;
+    }
+
+    /* 상단 헤더 (D-DAY 중앙 정렬) */
+    .widget-header {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
